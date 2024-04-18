@@ -1,4 +1,4 @@
-function Product({product}) {
+function Product({product, addToCart}) {
     const productStyle = {
         display: "flex",
         flexDirection: "column",
@@ -21,7 +21,7 @@ function Product({product}) {
         <p style={{fontSize: "25px", fontWeight: "bold"}}>{product.name}</p>
         <p style={{textAlign: "center"}}>{product.description}</p>
         <p style={{fontSize: "20px", fontWeight: "bold"}}>{product.price} &euro;</p>
-        <a style={productAddButtonStyle} href="#">Pridėti į krėpšelį</a>
+        <a style={productAddButtonStyle} onClick={addToCart} href="#">Pridėti į krėpšelį</a>
     </div>
 }
 
