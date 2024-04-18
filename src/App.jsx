@@ -43,7 +43,7 @@ function App() {
   return (
     <div>
         <NavigationBar isLoggedIn={isLoggedIn} cart={cart}/>
-        <ProductMenu products={products} setCart={setCart}/>
+        <ProductMenu products={products} setCart={setCart} cart={cart}/>
     </div>
   )
 }
