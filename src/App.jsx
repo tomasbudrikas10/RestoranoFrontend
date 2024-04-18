@@ -10,7 +10,12 @@ function App() {
     const [roles, setRoles] = useState([])
     const [users, setUsers] = useState([])
     const [userPaymentMethods, setUserPaymentMethods] = useState([])
-    const [cart, setCart] = useState([])
+    const [cart, setCart] = useState(() => {
+        const storedCart = localStorage.getItem("cart");
+        console.log(storedCart)
+        const parsedCart = JSON.parse(storedCart)
+        return parsedCart || {items: []}
+    })
     const [isLoggedIn, setLoggedIn] = useState(false)
     const dataToLoad = [
         { endpoint: "products", stateSetter: setProducts },
