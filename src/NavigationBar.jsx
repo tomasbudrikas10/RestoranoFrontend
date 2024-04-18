@@ -32,7 +32,7 @@ function NavigationBar({isLoggedIn, cart}) {
                 <a style={navigationButtonStyle}>Profilis</a>
                 <a style={navigationButtonStyle}>Atsijungti</a>
             </>}
-            <a style={navigationButtonStyle}>Krėpšelis ({cart.length})</a>
+            <a style={navigationButtonStyle}>Krėpšelis ({cart.items.length})</a>
         </div>
     </div>
 }
