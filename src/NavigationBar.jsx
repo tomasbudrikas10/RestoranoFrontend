@@ -1,4 +1,4 @@
-function NavigationBar(isLoggedIn) {
+function NavigationBar({isLoggedIn}) {
     const containerStyle = {
         display: "flex",
         justifyContent: "space-between",
@@ -24,7 +24,7 @@ function NavigationBar(isLoggedIn) {
     }
     return <div style={containerStyle}>
         <a style={navigationLogoText}>Tomo Restoranas</a>
-        {isLoggedIn ? <div style={navigationButtonGroup}>
+        {!isLoggedIn ? <div style={navigationButtonGroup}>
             <a style={navigationButtonStyle}>Log In</a>
             <a style={navigationButtonStyle}>Register</a>
         </div> : <div style={navigationButtonGroup}>
