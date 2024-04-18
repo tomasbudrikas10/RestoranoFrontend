@@ -1,6 +1,6 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
-function NavigationBar({isLoggedIn, cart}) {
+function NavigationBar({isLoggedIn, cart, setCurrentUser}) {
     const containerStyle = {
         display: "flex",
         justifyContent: "space-between",
@@ -27,6 +27,13 @@ function NavigationBar({isLoggedIn, cart}) {
         fontFamily: "Arial",
         textDecoration: "none",
     }
+    const navigate = useNavigate()
+    function logout() {
+        localStorage.removeItem("user")
+        setCurrentUser(null)
+        navigate("/")
+    }
+
     return <div style={containerStyle}>
         <Link to={"/"} style={navigationLogoText}>Tomo Restoranas</Link>
         <div style={navigationButtonGroup}>
@@ -35,7 +42,7 @@ function NavigationBar({isLoggedIn, cart}) {
                 <Link to={"/register"} style={navigationButtonStyle}>Registruotis</Link>
             </> : <>
                 <Link to={"/profile"} style={navigationButtonStyle}>Profilis</Link>
-                <a style={navigationButtonStyle}>Atsijungti</a>
+                <a href="#" onClick={logout} style={navigationButtonStyle}>Atsijungti</a>
             </>}
             <Link to={"/cart"} style={navigationButtonStyle}>Krėpšelis ({cart.items.length})</Link>
         </div>

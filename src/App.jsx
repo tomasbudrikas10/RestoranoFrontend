@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import NavigationBar from "./NavigationBar.jsx";
 import ProductMenu from "./ProductMenu.jsx";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
 import Layout from "./pages/Layout.jsx";
 import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
@@ -19,11 +19,14 @@ function App() {
     const [userPaymentMethods, setUserPaymentMethods] = useState([])
     const [cart, setCart] = useState(() => {
         const storedCart = localStorage.getItem("cart");
-        console.log(storedCart)
         const parsedCart = JSON.parse(storedCart)
         return parsedCart || {items: []}
     })
-    const [isLoggedIn, setLoggedIn] = useState(false)
+    const [currentUser, setCurrentUser] = useState(() => {
+        const storedUser = localStorage.getItem("user");
+        const parsedUser = JSON.parse(storedUser)
+        return parsedUser || null
+    })
     const dataToLoad = [
         { endpoint: "products", stateSetter: setProducts },
         { endpoint: "orders", stateSetter: setOrders },
@@ -33,7 +36,6 @@ function App() {
         { endpoint: "users", stateSetter: setUsers },
         { endpoint: "userPaymentMethods", stateSetter: setUserPaymentMethods }
     ];
-
     useEffect( () => {
         const loadData = () => {
             dataToLoad.forEach(item => {
@@ -55,11 +57,11 @@ function App() {
   return (
       <BrowserRouter>
           <Routes>
-              <Route path="/" element={<Layout cart={cart} isLoggedIn={isLoggedIn} />}>
+              <Route path="/" element={<Layout cart={cart} isLoggedIn={currentUser !== null} setCurrentUser={setCurrentUser} />}>
                   <Route index element={<Home products={products} setCart={setCart} cart={cart} />}/>
-                  <Route path="/register" element={<Register />}/>
-                  <Route path="/login" element={<Login />}/>
-                  <Route path="/profile" element={<Profile />}/>
+                  <Route path="/register" element={<Register roles={roles} setCurrentUser={setCurrentUser} />}/>
+                  <Route path="/login" element={<Login setCurrentUser={setCurrentUser}/>}/>
+                  <Route path="/profile" element={<Profile currentUser={currentUser} roles={roles}/>}/>
                   <Route path="/cart" element={<Cart cart={cart} setCart={setCart}/>}/>
               </Route>
           </Routes>
