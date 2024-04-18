@@ -1,6 +1,13 @@
 import {useEffect, useState} from "react";
 import NavigationBar from "./NavigationBar.jsx";
 import ProductMenu from "./ProductMenu.jsx";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Layout from "./pages/Layout.jsx";
+import Home from "./pages/Home.jsx";
+import Register from "./pages/Register.jsx";
+import Login from "./pages/Login.jsx";
+import Profile from "./pages/Profile.jsx";
+import Cart from "./pages/Cart.jsx";
 
 function App() {
     const [products, setProducts] = useState([])
@@ -46,10 +53,21 @@ function App() {
         loadData();
     }, [])
   return (
-    <div>
-        <NavigationBar isLoggedIn={isLoggedIn} cart={cart}/>
-        <ProductMenu products={products} setCart={setCart} cart={cart}/>
-    </div>
+      <BrowserRouter>
+          <Routes>
+              <Route path="/" element={<Layout cart={cart} isLoggedIn={isLoggedIn} />}>
+                  <Route index element={<Home products={products} setCart={setCart} cart={cart} />}/>
+                  <Route path="/register" element={<Register />}/>
+                  <Route path="/login" element={<Login />}/>
+                  <Route path="/profile" element={<Profile />}/>
+                  <Route path="/cart" element={<Cart cart={cart} setCart={setCart}/>}/>
+              </Route>
+          </Routes>
+      </BrowserRouter>
+    // <div>
+    //     <NavigationBar isLoggedIn={isLoggedIn} cart={cart}/>
+    //     <ProductMenu products={products} setCart={setCart} cart={cart}/>
+    // </div>
   )
 }
 
