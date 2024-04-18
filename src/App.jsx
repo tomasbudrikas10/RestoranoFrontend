@@ -9,6 +9,7 @@ function App() {
     const [roles, setRoles] = useState([])
     const [users, setUsers] = useState([])
     const [userPaymentMethods, setUserPaymentMethods] = useState([])
+    const [isLoggedIn, setLoggedIn] = useState(false)
     const dataToLoad = [
         { endpoint: "products", stateSetter: setProducts },
         { endpoint: "orders", stateSetter: setOrders },
@@ -38,7 +39,7 @@ function App() {
     }, [])
   return (
     <div>
-        <NavigationBar/>
+        <NavigationBar isLoggedIn={isLoggedIn}/>
         <p>Hello World!</p>
     </div>
   )
