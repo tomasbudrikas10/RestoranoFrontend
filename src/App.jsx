@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import NavigationBar from "./NavigationBar.jsx";
+import ProductMenu from "./ProductMenu.jsx";
 
 function App() {
     const [products, setProducts] = useState([])
@@ -28,6 +29,7 @@ function App() {
                     .then(json => {
                         if ('data' in json) {
                             item.stateSetter(json.data)
+                            console.log(json.data)
                         } else {
                             console.log("No data property on response.")
                         }
@@ -40,7 +42,7 @@ function App() {
   return (
     <div>
         <NavigationBar isLoggedIn={isLoggedIn}/>
-        <p>Hello World!</p>
+        <ProductMenu products={products}/>
     </div>
   )
 }
