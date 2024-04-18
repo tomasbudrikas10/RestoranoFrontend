@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import NavigationBar from "./NavigationBar.jsx";
 
 function App() {
     const [products, setProducts] = useState([])
@@ -37,7 +38,8 @@ function App() {
     }, [])
   return (
     <div>
-      <p>Hello World!</p>
+        <NavigationBar/>
+        <p>Hello World!</p>
     </div>
   )
 }
