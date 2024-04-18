@@ -1,4 +1,4 @@
-function NavigationBar({isLoggedIn}) {
+function NavigationBar({isLoggedIn, cart}) {
     const containerStyle = {
         display: "flex",
         justifyContent: "space-between",
@@ -24,13 +24,16 @@ function NavigationBar({isLoggedIn}) {
     }
     return <div style={containerStyle}>
         <a style={navigationLogoText}>Tomo Restoranas</a>
-        {!isLoggedIn ? <div style={navigationButtonGroup}>
-            <a style={navigationButtonStyle}>Log In</a>
-            <a style={navigationButtonStyle}>Register</a>
-        </div> : <div style={navigationButtonGroup}>
-            <a style={navigationButtonStyle}>Profile</a>
-            <a style={navigationButtonStyle}>Log Out</a>
-        </div>}
+        <div style={navigationButtonGroup}>
+            {!isLoggedIn ? <>
+                <a style={navigationButtonStyle}>Prisijungti</a>
+                <a style={navigationButtonStyle}>Registruotis</a>
+            </> : <>
+                <a style={navigationButtonStyle}>Profilis</a>
+                <a style={navigationButtonStyle}>Atsijungti</a>
+            </>}
+            <a style={navigationButtonStyle}>Krėpšelis ({cart.length})</a>
+        </div>
     </div>
 }
 
