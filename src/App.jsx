@@ -64,10 +64,6 @@ function App() {
               </Route>
           </Routes>
       </BrowserRouter>
-    // <div>
-    //     <NavigationBar isLoggedIn={isLoggedIn} cart={cart}/>
-    //     <ProductMenu products={products} setCart={setCart} cart={cart}/>
-    // </div>
   )
 }
 
