@@ -2,6 +2,7 @@ function Product({product}) {
     const productStyle = {
         display: "flex",
         flexDirection: "column",
+        background: "white",
         justifyContent: "space-around",
         alignItems: "center",
         padding: "20px",
