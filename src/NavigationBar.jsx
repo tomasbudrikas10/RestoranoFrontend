@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 function NavigationBar({isLoggedIn, cart}) {
     const containerStyle = {
         display: "flex",
@@ -10,6 +12,8 @@ function NavigationBar({isLoggedIn, cart}) {
         padding: "20px 50px",
         backgroundColor: "white",
         border: "2px solid darkorange",
+        textDecoration: "none",
+        color: "black",
         fontSize: "20px",
     }
     const navigationButtonGroup = {
@@ -20,19 +24,20 @@ function NavigationBar({isLoggedIn, cart}) {
         color: "white",
         fontSize: "36px",
         fontWeight: "bold",
-        fontFamily: "Arial"
+        fontFamily: "Arial",
+        textDecoration: "none",
     }
     return <div style={containerStyle}>
-        <a style={navigationLogoText}>Tomo Restoranas</a>
+        <Link to={"/"} style={navigationLogoText}>Tomo Restoranas</Link>
         <div style={navigationButtonGroup}>
             {!isLoggedIn ? <>
-                <a style={navigationButtonStyle}>Prisijungti</a>
-                <a style={navigationButtonStyle}>Registruotis</a>
+                <Link to={"/login"} style={navigationButtonStyle}>Prisijungti</Link>
+                <Link to={"/register"} style={navigationButtonStyle}>Registruotis</Link>
             </> : <>
-                <a style={navigationButtonStyle}>Profilis</a>
+                <Link to={"/profile"} style={navigationButtonStyle}>Profilis</Link>
                 <a style={navigationButtonStyle}>Atsijungti</a>
             </>}
-            <a style={navigationButtonStyle}>Krėpšelis ({cart.items.length})</a>
+            <Link to={"/cart"} style={navigationButtonStyle}>Krėpšelis ({cart.items.length})</Link>
         </div>
     </div>
 }
