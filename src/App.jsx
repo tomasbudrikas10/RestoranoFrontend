@@ -10,6 +10,7 @@ function App() {
     const [roles, setRoles] = useState([])
     const [users, setUsers] = useState([])
     const [userPaymentMethods, setUserPaymentMethods] = useState([])
+    const [cart, setCart] = useState([])
     const [isLoggedIn, setLoggedIn] = useState(false)
     const dataToLoad = [
         { endpoint: "products", stateSetter: setProducts },
@@ -41,8 +42,8 @@ function App() {
     }, [])
   return (
     <div>
-        <NavigationBar isLoggedIn={isLoggedIn}/>
-        <ProductMenu products={products}/>
+        <NavigationBar isLoggedIn={isLoggedIn} cart={cart}/>
+        <ProductMenu products={products} setCart={setCart}/>
     </div>
   )
 }
