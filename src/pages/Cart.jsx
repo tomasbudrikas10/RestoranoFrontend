@@ -1,8 +1,10 @@
 import {useEffect, useState} from "react";
 import product from "../Product.jsx";
+import {useNavigate} from "react-router-dom";
 
-function Cart({cart, setCart}) {
+function Cart({cart, setCart, currentUser, refreshData}) {
     const [adjustedCart, setAdjustedCart] = useState([])
+    const [errors, setErrors] = useState([])
     function adjustCart() {
         const result = []
         cart.items.forEach((item) => {
@@ -15,6 +17,7 @@ function Cart({cart, setCart}) {
         })
         setAdjustedCart(result)
     }
+    const navigate = useNavigate()
     useEffect(() => {
         adjustCart()
     }, [])
@@ -24,6 +27,47 @@ function Cart({cart, setCart}) {
     function clearCart() {
         setCart({items: []})
         localStorage.removeItem("cart")
+    }
+    function createOrder() {
+        let id = 0
+        fetch('http://localhost:3000/orders', {
+            method: "POST",
+            body: JSON.stringify({
+                userId: currentUser.id
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(json => {
+                if ("errors" in json) {
+                    console.log(json.errors);
+                } else {
+                    id = json.id
+                    adjustedCart.forEach(item => {
+                        fetch('http://localhost:3000/orderitems', {
+                            method: "POST",
+                            body: JSON.stringify({
+                                orderId: json.id,
+                                productId: item.id,
+                                quantity: item.quantity,
+                            }),
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        }).then(res2 => res2.json())
+                            .then(json2 => {
+                                if ("errors" in json2) {
+                                    errors.push(json2.errors)
+                                }
+                            })
+                    });
+                }
+            }).finally( () => {
+                localStorage.removeItem("cart")
+                setTimeout(() => {window.location = "/"}, 2000)
+        });
     }
     return <div>
         <div style={{
@@ -43,7 +87,9 @@ function Cart({cart, setCart}) {
             }))}
             {!adjustedCart.length ? <p>Jūsų krėpšelis yra tuščias.</p> : ""}
             {adjustedCart.length ? <a href="#" style={{marginTop: "auto", padding: "10px 0", width: "200px", textAlign: "center", fontSize: "20px", border: "2px solid darkorange", textDecoration: "none", color: "black", background: "whitesmoke"}} onClick={clearCart}>Ištrinti krėpšelį</a> : ""}
-            {adjustedCart.length ? <a href="#" style={{padding: "10px 0", fontSize: "20px", width: "200px", textAlign: "center", border: "2px solid darkorange", textDecoration: "none", color: "black", background: "whitesmoke"}}>Sukurti užsakymą</a> : ""}
+            {adjustedCart.length ?
+                currentUser !== null ? <a href="#" style={{padding: "10px 0", fontSize: "20px", width: "200px", textAlign: "center", border: "2px solid darkorange", textDecoration: "none", color: "black", background: "whitesmoke"}} onClick={createOrder}>Sukurti užsakymą</a> : <p>Norint baigt užsakymą, reikia prisijungti.</p>
+                : ""}
         </div>
     </div>
 }

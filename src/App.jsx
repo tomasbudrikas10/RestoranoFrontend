@@ -8,6 +8,9 @@ import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
 import Profile from "./pages/Profile.jsx";
 import Cart from "./pages/Cart.jsx";
+import OrderHistory from "./pages/OrderHistory.jsx";
+import Order from "./pages/Order.jsx";
+import EmployeeDashboard from "./pages/EmployeeDashboard.jsx";
 
 function App() {
     const [products, setProducts] = useState([])
@@ -36,22 +39,23 @@ function App() {
         { endpoint: "users", stateSetter: setUsers },
         { endpoint: "userPaymentMethods", stateSetter: setUserPaymentMethods }
     ];
+    const loadData = () => {
+        dataToLoad.forEach(item => {
+            fetch(`http://localhost:3000/${item.endpoint}`)
+                .then(res => res.json())
+                .then(json => {
+                    if ('data' in json) {
+                        item.stateSetter(json.data)
+                        console.log(json.data)
+                    } else {
+                        console.log("No data property on response.")
+                    }
+                })
+                .catch(err => console.log(err))
+        })
+    }
+
     useEffect( () => {
-        const loadData = () => {
-            dataToLoad.forEach(item => {
-                fetch(`http://localhost:3000/${item.endpoint}`)
-                    .then(res => res.json())
-                    .then(json => {
-                        if ('data' in json) {
-                            item.stateSetter(json.data)
-                            console.log(json.data)
-                        } else {
-                            console.log("No data property on response.")
-                        }
-                    })
-                    .catch(err => console.log(err))
-            })
-        }
         loadData();
     }, [])
   return (
@@ -61,8 +65,11 @@ function App() {
                   <Route index element={<Home products={products} setCart={setCart} cart={cart} />}/>
                   <Route path="/register" element={<Register roles={roles} setCurrentUser={setCurrentUser} />}/>
                   <Route path="/login" element={<Login setCurrentUser={setCurrentUser}/>}/>
-                  <Route path="/profile" element={<Profile currentUser={currentUser} roles={roles}/>}/>
-                  <Route path="/cart" element={<Cart cart={cart} setCart={setCart}/>}/>
+                  <Route path="/profile" element={<Profile currentUser={currentUser}/>}/>
+                  <Route path="/cart" element={<Cart cart={cart} setCart={setCart} currentUser={currentUser} />}/>
+                  <Route path="/OrderHistory" element={<OrderHistory orderStates={orderStates} orders={orders.filter((order) => order.userId === (currentUser?.id))}/>}/>
+                  <Route path="/order" element={<Order orderItems={orderItems} products={products} orderStates={orderStates} />}/>
+                  <Route path="/EmployeeDashboard" element={<EmployeeDashboard orders={orders} orderStates={orderStates}/>}/>
               </Route>
           </Routes>
       </BrowserRouter>
